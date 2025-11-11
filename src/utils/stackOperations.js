@@ -20,20 +20,27 @@ export const mostrarPila = () => {
 };
 
 export const mostrarEstadisticas = () => {
-    const total = stack.length;
-    const precioTotal = stack.reduce((acc, l) => acc + l.precio, 0);
-    const promedio = total ? precioTotal / total : 0;
-    const editoriales = [...new Set(stack.map(l => l.editorial))];
-    const librosPorEditorial = stack.reduce((acc, l) => {
+    const total = stack.length; // total de libros
+    const precioTotal = stack.reduce((acc, l) => acc + l.precio, 0); // precio total
+    const promedio = total ? precioTotal / total : 0; // promedio de precio
+    const editoriales = [...new Set(stack.map(l => l.editorial))]; // Editoriales únicos
+    const librosPorEditorial = stack.reduce((acc, l) => { // libros por editorial
         const editorial = l.editorial;
         acc[editorial] = (acc[editorial] || 0) + 1;
         return acc;
     }, {});
-    const librosPorGenero = stack.reduce((acc, l) => {
+    const librosPorGenero = stack.reduce((acc, l) => { //libros por genero
         const genero = l.genero;
         acc[genero] = (acc[genero] || 0) + 1;
         return acc;
     }, {});
+    const mayorPrecio = Math.max(...stack.map(l => l.precio)); // Precio del libro más caro
+
+    const librosmayoresPrecio = stack.filter(l => l.precio === mayorPrecio).map(l => l.titulo); // libros mayores precio
+
+    const maspaginas = Math.max(...stack.map(l => l.paginas)); // Máximo de páginas
+
+
 
     console.log("\n📊 Estadísticas:");
     console.log(`📚 Total libros: ${total}`);
@@ -44,6 +51,10 @@ export const mostrarEstadisticas = () => {
     console.table(librosPorEditorial);
     console.log("🎨 Géneros:");
     console.table(librosPorGenero);
+    console.log(`💰 Mayor precio: $${mayorPrecio.toLocaleString()}`); 
+    console.log(`📖 Libros mayores precio: ${librosmayoresPrecio.join(", ")}`);
+    console.log(`📖 Máximo de páginas: ${maspaginas}`);
+
 
     console.log("------------------------------------------\n");
     
